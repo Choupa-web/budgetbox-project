@@ -1,0 +1,13 @@
+header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 60px;
+    background-color: #673ab7;
+}
+h1, div {
+    width: 100%;
+    color: white;
+    font-size: 2em;
+    padding-left: 20px;
+} 

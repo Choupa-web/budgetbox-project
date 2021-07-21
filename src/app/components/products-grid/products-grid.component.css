@@ -1,0 +1,7 @@
+.mat-table {
+    width: 1000px;
+}
+
+td:hover {
+    cursor: pointer;
+}

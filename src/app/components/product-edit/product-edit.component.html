@@ -1,0 +1,14 @@
+<button mat-flat-button color="warn" (click)="backButton()">Retour</button>
+<h1>Modification du produit : {{ productToEdit.id }} - {{ productToEdit.name }}</h1>
+
+<form [formGroup]="updateProductForm" (ngSubmit)="onSubmitForm()">
+    <mat-form-field appearance="fill">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="productName">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Nom scientifique</mat-label>
+        <input matInput formControlName="productScientificName">
+    </mat-form-field>
+    <button mat-flat-button color="primary" [disabled]="!isValueChanged">Enregistrer</button>
+</form>
