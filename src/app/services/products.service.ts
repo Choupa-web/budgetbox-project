@@ -13,17 +13,14 @@ const httpOptions = {
 export class ProductsService {
 
   private productsUrl:string = "http://localhost:8080/products/v1.0/";
-  //private productUrl:string = "http://localhost:8080/product?id=";
-  //private localhostUrl:string = "http://localhost:8080/";
   private queryUrl:string;
 
   constructor(private http: HttpClient) { }
 
-  getProducts(size?:string, page?:number):Observable<any> {
-    let productsPagination = size ? "?size=" + size : "";
-    let productsPage = page && size ? "&page=" + page : "";
-    if( size && page ) {
-      this.queryUrl = this.productsUrl + productsPagination;
+  getProducts(size?:number):Observable<any> {
+    let productsPaginationSize = size ? "?size=" + size : "";
+    if( size ) {
+      this.queryUrl = this.productsUrl + productsPaginationSize;
     }
     else {
       this.queryUrl = this.productsUrl;
@@ -46,6 +43,11 @@ export class ProductsService {
 
   addProduct(product:any) {
     return this.http.post(this.productsUrl,product);
+  }
+
+  deleteProduct(id:number){
+    return this.http.delete(this.productsUrl + id);
+
   }
 
 

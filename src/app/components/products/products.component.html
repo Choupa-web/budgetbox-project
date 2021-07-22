@@ -16,7 +16,7 @@
             <button mat-flat-button color="primary" [disabled]="!isValues">Ajouter</button>
         </form>
     </div>
-    <app-products-grid *ngIf="screenIsBig" [productsData]="productsList" (EditProduct)="edit($event)"></app-products-grid>
+    <app-products-grid *ngIf="screenIsBig" [productsData]="productsList" (EditProduct)="edit($event)" (DeleteProduct)="delete($event)"></app-products-grid>
     <app-products-list *ngIf="screenIsSmall" [productsData]="productsList" (EditProduct)="edit($event)"></app-products-list>
 </section>
 

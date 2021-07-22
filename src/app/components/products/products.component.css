@@ -1,5 +1,5 @@
 #addProduct {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     display: flex;
 }
 
@@ -12,6 +12,7 @@
     border: 1px solid transparent;
     border-radius: .25rem;
     padding: .75rem 1.25rem;
+    margin: 5px 0;
 }
 
 .alert-success {

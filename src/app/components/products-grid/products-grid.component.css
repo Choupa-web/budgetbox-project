@@ -5,3 +5,16 @@
 td:hover {
     cursor: pointer;
 }
+
+tr.mat-row {
+    height: 30px !important;
+}
+
+tr.mat-header-row {
+    height: 40px !important;
+}
+
+.mat-paginator-container {
+    height: 15px;
+    min-height: 20px !important;
+}

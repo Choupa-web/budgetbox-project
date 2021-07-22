@@ -3,7 +3,7 @@ import { ProductsService } from '../../services/products.service';
 import { Product } from '../../shared/interfaces';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {Subject, concat} from 'rxjs';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -29,6 +29,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isMessage:boolean = false;
   isSuccess:boolean;
   isValues: boolean = false;
+  totalRecords: number;
 
   displayNameMap = new Map([
     [Breakpoints.XSmall, 'XSmall'],
@@ -67,7 +68,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.getProductsList("30",1);
+
+    // get total number of records
+    this.getProductsList();
     this.addProductForm = this.fb.group({
       productName: [''],
       productScientificName:[''],
@@ -80,9 +83,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         }
         else if(data.productName == '' || data.productScientificName =='') { this.isValues = false;}
       }
-    );
-    //console.log("current size:", this.currentScreenSize);
-   
+    );  
   }
 
   ngOnDestroy() {
@@ -94,13 +95,35 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/edit/'+$event]);
   }
 
-  getProductsList(size?:string, page?:number) {
-    this.ps.getProducts(size,page).subscribe(
-      data => {
-        this.productsList = data.hits;
-        console.log("products: ", this.productsList);
+  delete($event) {
+    this.ps.deleteProduct($event).subscribe(
+      result => {
+        console.log("delete result: ", result);
+        if(result == null) {
+          this.message = "Produit supprimé avec succès";
+          this.isSuccess= true;
+          this.getProductsList();
+        }
+        else {
+          this.message = "Problème rencontré lors de la suppression du produit";
+          this.isSuccess = false;
+        }
+        this.isMessage = true;
       }
-    );
+    )
+  }
+
+  getProductsList() {
+      this.ps.getProducts().subscribe(
+        data => {
+          this.totalRecords = data.total;
+          console.log("total Records: ", this.totalRecords);
+          this.ps.getProducts(this.totalRecords).subscribe(
+            fulldata => {
+              this.productsList = fulldata.hits;
+            });
+        });
+      /* TROUVER MEILLEUR SOLUTION  */
   }
 
   addButton(){
@@ -120,6 +143,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         if(data) {
           this.message = "Produit ajouté avec succes";
           this.isSuccess = true;
+          this.getProductsList();
         }
         else {
           this.message = "Erreur de lors de l'ajout du produit";
