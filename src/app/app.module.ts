@@ -20,6 +20,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { ProductAddComponent } from './components/product-add/product-add.component';
+import { AlertsComponent } from './shared/alerts/alerts.component';
+import { Error404Component } from './components/error404/error404.component';
 
 
 
@@ -30,7 +33,10 @@ import {MatIconModule} from '@angular/material/icon';
     ProductsGridComponent,
     ProductsListComponent,
     HeaderComponent,
-    ProductEditComponent
+    ProductEditComponent,
+    ProductAddComponent,
+    AlertsComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,

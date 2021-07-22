@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { Product } from '../shared/interfaces';
+import * as apiSettings from '../config/api.settings.json';
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json", "Access-Control-Allow-Origin":"*" })
@@ -12,11 +13,15 @@ const httpOptions = {
 })
 export class ProductsService {
 
-  private productsUrl:string = "http://localhost:8080/products/v1.0/";
+  private productsUrl:string = apiSettings.apiurl;
   private queryUrl:string;
 
   constructor(private http: HttpClient) { }
 
+/**
+ * Returns the list of products
+ * @param id {number} number of products by page
+ */
   getProducts(size?:number):Observable<any> {
     let productsPaginationSize = size ? "?size=" + size : "";
     if( size ) {
@@ -30,21 +35,37 @@ export class ProductsService {
     return this.http.get(this.queryUrl, httpOptions);
   }
 
+  /**
+  * Returns the information of a product
+  * @param id {number} id of the product
+  */
   getProductInfo(id:number):Observable<any>{
     this.queryUrl = this.productsUrl + id ;
     return this.http.get(this.queryUrl, httpOptions);
 
   }
 
+  /**
+  * Update product information of one product
+  * @param product{Product} all product info fields
+  */
   updateProduct(product: Product) {
     this.queryUrl = this.productsUrl + product.id;
     return this.http.put(this.queryUrl,product);
   }
 
+  /**
+  * Add new product
+  * @param product {Product} all product info fields
+  */
   addProduct(product:any) {
     return this.http.post(this.productsUrl,product);
   }
-
+ 
+  /**
+  * Delete a product
+  * @param id {number} all product info fields
+  */
   deleteProduct(id:number){
     return this.http.delete(this.productsUrl + id);
 

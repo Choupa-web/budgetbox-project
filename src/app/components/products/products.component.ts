@@ -5,14 +5,9 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {takeUntil} from 'rxjs/operators';
 import {Subject, concat} from 'rxjs';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder } from '@angular/forms';
 
-interface newProduct  {
-  name:string;
-  scientificName:string;
-  groupId:string;
-  subGroupId:string;
-}
+
+
 
 @Component({
   selector: 'app-products',
@@ -22,13 +17,12 @@ interface newProduct  {
 export class ProductsComponent implements OnInit, OnDestroy {
 
   productsList:Product[];
-  addProductForm: FormGroup;
-  showAddForm:boolean = false;
-  payload:newProduct;
+  
+ 
   message:string ='';
   isMessage:boolean = false;
   isSuccess:boolean;
-  isValues: boolean = false;
+ 
   totalRecords: number;
 
   displayNameMap = new Map([
@@ -44,7 +38,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   screenIsBig:boolean = true;
   screenIsSmall:boolean = false;
 
-  constructor(private ps: ProductsService, breakpointObserver: BreakpointObserver, private router:Router, private fb:FormBuilder){ 
+  constructor(private ps: ProductsService, breakpointObserver: BreakpointObserver, private router:Router){ 
     breakpointObserver.observe([
       Breakpoints.XSmall,
       Breakpoints.Small,
@@ -68,22 +62,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-
-    // get total number of records
     this.getProductsList();
-    this.addProductForm = this.fb.group({
-      productName: [''],
-      productScientificName:[''],
-    });
-
-    this.addProductForm.valueChanges.subscribe(
-      data => {
-        if(data.productName != '' && data.productScientificName !='') {
-          this.isValues = true;
-        }
-        else if(data.productName == '' || data.productScientificName =='') { this.isValues = false;}
-      }
-    );  
+    console.log("screen size: ", this.currentScreenSize);
   }
 
   ngOnDestroy() {
@@ -126,32 +106,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       /* TROUVER MEILLEUR SOLUTION  */
   }
 
-  addButton(){
-    this.showAddForm = !this.showAddForm;
-  }
 
-  onSubmitAddForm(){
-    // Recuperation des infos du formulaire
-    this.payload = {
-      name: this.addProductForm.value['productName'],
-      scientificName: this.addProductForm.value['productScientificName'],
-      groupId:"136",
-      subGroupId:"137"
-    };
-    this.ps.addProduct(this.payload).subscribe(
-      data => {
-        if(data) {
-          this.message = "Produit ajouté avec succes";
-          this.isSuccess = true;
-          this.getProductsList();
-        }
-        else {
-          this.message = "Erreur de lors de l'ajout du produit";
-          this.isSuccess = false;
-        }
-        this.isMessage = true;
-      }
-    );
-  }
+ 
 
 }

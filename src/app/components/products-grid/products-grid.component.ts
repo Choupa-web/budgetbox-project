@@ -16,8 +16,7 @@ export class ProductsGridComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() DeleteProduct: EventEmitter<number> = new EventEmitter<number>();
 
   //displayedColumns:string[] = ['id','name','scientificName'] ;
-  columnsToDisplay: string[] = ['actions','id','name','scientificName'];
-  productsTotalNumber:number = 907;
+  columnsToDisplay: string[] = ['action1', 'action2','id','name','scientificName'];
   dataSource: MatTableDataSource<Product>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -26,44 +25,31 @@ export class ProductsGridComponent implements OnInit, AfterViewInit, OnChanges {
   productsList:Product[];
   //pageEvent: PageEvent;
 
-  constructor(private ps:ProductsService) { 
-    console.log("constructeur productlist: ", this.productsData);
-  }
+  constructor(private ps:ProductsService) {  }
 
   ngAfterViewInit() {
-    console.log("afterviewinit productlist: ", this.productsData);
-    this.dataSource.paginator = this.paginator;
+    /* console.log("afterviewinit productlist: ", this.productsData); */
+    this.dataSource.paginator = this.paginator; 
   }
 
 
   ngOnInit(): void {
-    console.log("oninit productlist: ", this.productsData);
+   /* console.log("oninit productlist: ", this.productsData);
     this.dataSource = new MatTableDataSource<Product>(this.productsData);
-    console.log("datasource: ", this.dataSource);
+    console.log("datasource: ", this.dataSource); */
   }
 
   ngOnChanges() {
-    this.productsList = this.productsData;
-    console.log("onchange productlist: ", this.productsData);
-  }
-
-  handlePageEvent($event){
-    console.log("paginator: ", $event);
-    this.ps.getProducts().subscribe(
-      data => {
-        this.productsData = data.hits;
-        console.log("products: ", this.productsData);
-      }
-    )
+    this.dataSource = new MatTableDataSource<Product>(this.productsData);
+    this.dataSource.paginator = this.paginator;
+    console.log("datasource: ", this.dataSource);
   }
 
   editProduct(element:Product) {
-    console.log("element: ", element.id);
     this.EditProduct.emit(Number(element.id));
   }
 
   deleteProduct(id:number){
-    console.log("delete id: ", id);
     this.DeleteProduct.emit(id);
   }
 

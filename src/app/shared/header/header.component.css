@@ -4,10 +4,32 @@ header {
     align-items: center;
     height: 60px;
     background-color: #673ab7;
+    padding: 0px 20px;
+}
+header>button {
+    width: 200px;
 }
 h1, div {
     width: 100%;
     color: white;
     font-size: 2em;
-    padding-left: 20px;
 } 
+
+.home {
+    width:40px;
+}
+
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px 0px 0px 0px;
+    }
+    header>button {
+        width: 100%;
+    }
+    header>div {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+}

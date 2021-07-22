@@ -1,22 +1,6 @@
 <section id="products">
-    <div *ngIf="isMessage" class="alert" [ngClass]="{'alert-success': isSuccess, 'alert-error': !isSuccess}">
-        {{ message }}
-    </div>
-    <div id="addProduct">
-        <button mat-flat-button color="warn" (click)="addButton()">Nouveau produit</button>
-        <form *ngIf="showAddForm" [formGroup]="addProductForm" (ngSubmit)="onSubmitAddForm()">
-            <mat-form-field appearance="fill">
-                <mat-label>Nom</mat-label>
-                <input matInput formControlName="productName">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Nom scientifique</mat-label>
-                <input matInput formControlName="productScientificName">
-            </mat-form-field>
-            <button mat-flat-button color="primary" [disabled]="!isValues">Ajouter</button>
-        </form>
-    </div>
+    <app-alerts *ngIf="isMessage" [message]="message" [isSuccess]="isSuccess"></app-alerts>
     <app-products-grid *ngIf="screenIsBig" [productsData]="productsList" (EditProduct)="edit($event)" (DeleteProduct)="delete($event)"></app-products-grid>
-    <app-products-list *ngIf="screenIsSmall" [productsData]="productsList" (EditProduct)="edit($event)"></app-products-list>
+    <app-products-list *ngIf="screenIsSmall" [productsData]="productsList" (EditProduct)="edit($event)" (DeleteProduct)="delete($event)"></app-products-list>
 </section>
 

@@ -12,6 +12,7 @@ export class ProductsListComponent implements OnInit {
   @Input() productsData: Product[];
 
   @Output() EditProduct: EventEmitter<number> = new EventEmitter<number>(); 
+  @Output() DeleteProduct: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private ps:ProductsService) { }
 
@@ -20,6 +21,10 @@ export class ProductsListComponent implements OnInit {
 
   editProduct(id:number) {
     this.EditProduct.emit(id);
+  }
+
+  deleteProduct(id:number){
+    this.DeleteProduct.emit(id);
   }
 
 }

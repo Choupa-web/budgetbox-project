@@ -1,7 +1,15 @@
 
-<mat-paginator [pageSizeOptions]="[25]" showFirstLastButtons></mat-paginator>
+<mat-paginator [pageSizeOptions]="[15]" showFirstLastButtons></mat-paginator>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="action1">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" (click)="editProduct(element)">
+            <button mat-icon-button color="warn" aria-label="Editer le produit">
+                <mat-icon>edit</mat-icon>
+              </button>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="action2">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
             <button mat-icon-button color="primary" aria-label="supprimer le produit" (click)="deleteProduct(element.id)">

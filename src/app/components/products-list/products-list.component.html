@@ -1,3 +1,11 @@
-<mat-action-list>
-    <button class="productListItem" *ngFor="let product of productsData" mat-list-item (click)="editProduct(product.id)"> {{ product.id }} - {{ product.name }} </button>
-</mat-action-list>
+<mat-list>
+    <mat-list-item class="productListItem" *ngFor="let product of productsData">
+        <button mat-icon-button aria-label="Supprimer un produit">
+            <mat-icon (click)="deleteProduct(product.id)">delete</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="Editer un produit">
+            <mat-icon (click)="editProduct(product.id)">edit</mat-icon>
+        </button>
+      {{ product.id }} - {{ product.name }}     
+    </mat-list-item>
+  </mat-list>
