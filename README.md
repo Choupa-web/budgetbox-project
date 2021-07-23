@@ -1,6 +1,6 @@
 # Budgetbox Project
 
-Application développer sous Angular 10. Elle permet de:
+Application développée sous Angular 10. Elle permet de:
 
 - afficher la liste des produits ( 2 types d'affichage en fonction de écran utilisé)
 - modifier un produit
