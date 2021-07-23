@@ -20,4 +20,5 @@ th.mat-header-cell:first-of-type {
 .mat-paginator-container {
     height: 15px;
     min-height: 20px !important;
+    width: auto !important;
 }

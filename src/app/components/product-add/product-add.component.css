@@ -13,3 +13,7 @@ mat-form-field {
 .mat-form-field-appearance-outline .mat-form-field-outline {
     height: 40px !important;
 }
+
+input {
+    width: 200px;
+}

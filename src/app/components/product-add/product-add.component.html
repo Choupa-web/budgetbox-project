@@ -1,16 +1,18 @@
-<button mat-flat-button color="warn" (click)="backButton()">Retour</button>
-<h2>Ajouter un produit</h2>
+<section id="addProduct">
+    <button mat-flat-button color="warn" (click)="backButton()">Retour</button>
+    <h2>Ajouter un produit</h2>
 
-<app-alerts *ngIf="isMessage" [message]="message" [isSuccess]="isSuccess"></app-alerts>
+    <app-alerts *ngIf="isMessage" [message]="message" [isSuccess]="isSuccess"></app-alerts>
 
-<form [formGroup]="addProductForm" (ngSubmit)="onSubmitAddForm()">
-    <mat-form-field appearance="outline">
-        <mat-label>Nom</mat-label>
-        <input matInput formControlName="productName">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Nom scientifique</mat-label>
-        <input matInput formControlName="productScientificName">
-    </mat-form-field>
-    <button mat-flat-button color="primary" [disabled]="!isValues">Ajouter</button>
-</form>
+    <form [formGroup]="addProductForm" (ngSubmit)="onSubmitAddForm()">
+        <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="productName">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Nom scientifique</mat-label>
+            <input matInput formControlName="productScientificName">
+        </mat-form-field>
+        <button mat-flat-button color="primary" [disabled]="!isValues">Ajouter</button>
+    </form>
+</section>

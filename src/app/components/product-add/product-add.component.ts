@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ProductsService } from '../../services/products.service';
 import { Router } from '@angular/router';
+import {takeUntil} from 'rxjs/operators';
+import {Subject, concat} from 'rxjs';
 
 interface newProduct  {
   name:string;
@@ -15,7 +17,7 @@ interface newProduct  {
   templateUrl: './product-add.component.html',
   styleUrls: ['./product-add.component.css']
 })
-export class ProductAddComponent implements OnInit {
+export class ProductAddComponent implements OnInit, OnDestroy {
 
   addProductForm: FormGroup;
   isValues: boolean = false;
@@ -23,12 +25,16 @@ export class ProductAddComponent implements OnInit {
   message:string ='';
   isMessage:boolean = false;
   isSuccess:boolean;
+  lastProductDeleted:string;
+  destroyed = new Subject<void>();
 
   constructor(private fb:FormBuilder, private ps:ProductsService, private router:Router) { }
 
   ngOnInit(): void {
+    this.lastProductDeleted = localStorage.getItem("lastProductDeleted");
+
     this.addProductForm = this.fb.group({
-      productName: [''],
+      productName: [this.lastProductDeleted],
       productScientificName:[''],
     });
 
@@ -41,6 +47,11 @@ export class ProductAddComponent implements OnInit {
       });  
   }
 
+  ngOnDestroy() {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
   onSubmitAddForm(){
     // Recuperation des infos du formulaire
     this.payload = {
@@ -49,7 +60,7 @@ export class ProductAddComponent implements OnInit {
       groupId:"136",
       subGroupId:"137"
     };
-    this.ps.addProduct(this.payload).subscribe(
+    this.ps.addProduct(this.payload).pipe(takeUntil(this.destroyed)).subscribe(
       data => {
         if(data) {
           this.message = "Produit ajouté avec succes";

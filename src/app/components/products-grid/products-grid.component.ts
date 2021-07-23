@@ -13,30 +13,23 @@ import { ProductsService } from '../../services/products.service';
 export class ProductsGridComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() productsData: Product[];
   @Output() EditProduct: EventEmitter<number> = new EventEmitter<number>();
-  @Output() DeleteProduct: EventEmitter<number> = new EventEmitter<number>();
+  @Output() DeleteProduct: EventEmitter<Product> = new EventEmitter<Product>();
 
-  //displayedColumns:string[] = ['id','name','scientificName'] ;
-  columnsToDisplay: string[] = ['action1', 'action2','id','name','scientificName'];
+  columnsToDisplay: string[] = ['action1','action2','id','name','scientificName'];
   dataSource: MatTableDataSource<Product>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
   productsList:Product[];
-  //pageEvent: PageEvent;
 
   constructor(private ps:ProductsService) {  }
 
   ngAfterViewInit() {
-    /* console.log("afterviewinit productlist: ", this.productsData); */
     this.dataSource.paginator = this.paginator; 
   }
 
 
   ngOnInit(): void {
-   /* console.log("oninit productlist: ", this.productsData);
-    this.dataSource = new MatTableDataSource<Product>(this.productsData);
-    console.log("datasource: ", this.dataSource); */
   }
 
   ngOnChanges() {
@@ -49,8 +42,8 @@ export class ProductsGridComponent implements OnInit, AfterViewInit, OnChanges {
     this.EditProduct.emit(Number(element.id));
   }
 
-  deleteProduct(id:number){
-    this.DeleteProduct.emit(id);
+  deleteProduct(product:Product){
+    this.DeleteProduct.emit(product);
   }
 
 }

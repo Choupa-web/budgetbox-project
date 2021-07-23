@@ -5,8 +5,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {takeUntil} from 'rxjs/operators';
 import {Subject, concat} from 'rxjs';
 import { Router } from '@angular/router';
-
-
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -17,11 +16,10 @@ import { Router } from '@angular/router';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   productsList:Product[];
-  
- 
   message:string ='';
   isMessage:boolean = false;
   isSuccess:boolean;
+  lastProductDeleted:string ='';
  
   totalRecords: number;
 
@@ -37,6 +35,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   currentScreenSize: string;
   screenIsBig:boolean = true;
   screenIsSmall:boolean = false;
+
 
   constructor(private ps: ProductsService, breakpointObserver: BreakpointObserver, private router:Router){ 
     breakpointObserver.observe([
@@ -62,6 +61,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    console.log("environment: ", environment);
     this.getProductsList();
     console.log("screen size: ", this.currentScreenSize);
   }
@@ -76,12 +76,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   delete($event) {
-    this.ps.deleteProduct($event).subscribe(
+    this.ps.deleteProduct($event.id).pipe(takeUntil(this.destroyed)).subscribe(
       result => {
         console.log("delete result: ", result);
         if(result == null) {
           this.message = "Produit supprimé avec succès";
           this.isSuccess= true;
+          localStorage.setItem("lastProductDeleted", $event.name);
           this.getProductsList();
         }
         else {
@@ -98,7 +99,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         data => {
           this.totalRecords = data.total;
           console.log("total Records: ", this.totalRecords);
-          this.ps.getProducts(this.totalRecords).subscribe(
+          this.ps.getProducts(this.totalRecords).pipe(takeUntil(this.destroyed)).subscribe(
             fulldata => {
               this.productsList = fulldata.hits;
             });

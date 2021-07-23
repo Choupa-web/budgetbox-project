@@ -1,7 +1,7 @@
 <mat-list>
     <mat-list-item class="productListItem" *ngFor="let product of productsData">
         <button mat-icon-button aria-label="Supprimer un produit">
-            <mat-icon (click)="deleteProduct(product.id)">delete</mat-icon>
+            <mat-icon (click)="deleteProduct(product)">delete</mat-icon>
         </button>
         <button mat-icon-button aria-label="Editer un produit">
             <mat-icon (click)="editProduct(product.id)">edit</mat-icon>

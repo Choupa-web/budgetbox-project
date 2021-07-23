@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { Product } from '../shared/interfaces';
-import * as apiSettings from '../config/api.settings.json';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json", "Access-Control-Allow-Origin":"*" })
@@ -13,7 +13,7 @@ const httpOptions = {
 })
 export class ProductsService {
 
-  private productsUrl:string = apiSettings.apiurl;
+  private productsUrl:string = environment.apiUrl;
   private queryUrl:string;
 
   constructor(private http: HttpClient) { }

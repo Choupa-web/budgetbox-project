@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductsGridComponent } from './products-grid.component';
 
 describe('ProductsGridComponent', () => {
@@ -8,7 +8,8 @@ describe('ProductsGridComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProductsGridComponent ]
+      declarations: [ ProductsGridComponent ],
+      imports: [HttpClientTestingModule],
     })
     .compileComponents();
   });
