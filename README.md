@@ -1,8 +1,17 @@
 # Budgetbox Project
 
+Application développer sous Angular 10. Elle permet de:
+
+- afficher la liste des produits ( 2 types d'affichage en fonction de écran utilisé)
+- modifier un produit
+- supprimer un produit
+- ajouter un produit
+
+
+
 ## Modification de l'URL de l'API
 
-L'API utilisée est par défaut : http://localhost:8080/products/v1.0/ .
+L'API utilisée pour manipuler les données est par défaut : http://localhost:8080/products/v1.0/ .
 
 Celle-ci peut être modifiée en modifiant les fichiers src\environments\environment.ts et src\environments\environment.prod.ts .
 
