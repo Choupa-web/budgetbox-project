@@ -3,6 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 section { width: 1000px; }
+.spinner {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+}
 
 @media (max-width: 800px) {
     section { width: 550px;}

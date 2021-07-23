@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { Product } from '../../shared/interfaces';
 import {takeUntil} from 'rxjs/operators';
-import {Subject, concat} from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-product-edit',
@@ -17,10 +17,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   payload:Product;
   isValueChanged:boolean = false;
   destroyed = new Subject<void>();
+  message:string ='';
+  isMessage:boolean = false;
+  isSuccess:boolean;
+  isBusy:boolean;
 
   constructor(private router: Router, private route: ActivatedRoute, private ps: ProductsService, private fb:FormBuilder) { }
 
   ngOnInit(): void {
+    this.isBusy = true;
      this.getProductInfo(this.route.snapshot.params['id']);  
     
   }
@@ -31,22 +36,29 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   getProductInfo(id:number) {
-    this.ps.getProductInfo(id).subscribe(
+    this.ps.getProductInfo(id).pipe(takeUntil(this.destroyed)).subscribe(
       data => {
-        this.productToEdit = data;
-        this.updateProductForm = this.fb.group({
-          productName: [this.productToEdit.name],
-          productScientificName: [this.productToEdit.scientificName],
-        });
-        this.updateProductForm.valueChanges.subscribe(
-          value => {
-            console.log("values: ", value);
-            if(value.productName === this.productToEdit.name && value.productScientificName === this.productToEdit.scientificName){
-              this.isValueChanged = false;
+        if(data.id != -1) {
+          this.productToEdit = data;
+          this.updateProductForm = this.fb.group({
+            productName: [this.productToEdit.name],
+            productScientificName: [this.productToEdit.scientificName],
+          });
+          this.updateProductForm.valueChanges.subscribe(
+            value => {
+              if(value.productName === this.productToEdit.name && value.productScientificName === this.productToEdit.scientificName){
+                this.isValueChanged = false;
+              }
+              else if(value.productName != this.productToEdit.name || value.productScientificName != this.productToEdit.scientificName) { this.isValueChanged = true;}
             }
-            else if(value.productName != this.productToEdit.name || value.productScientificName != this.productToEdit.scientificName) { this.isValueChanged = true;}
-          }
-        ); 
+          ); 
+        }
+        else {
+          this.message = "Récuperation des informations du produit: " + data.error.message;
+          this.isSuccess = false;
+          this.isMessage = true;
+        }
+        this.isBusy = false;
       }
     );
   }
@@ -60,12 +72,17 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       groupId:this.productToEdit.groupId,
       subGroupId:this.productToEdit.subGroupId,
     };
-    console.log("payload:", this.payload);
-    this.ps.updateProduct(this.payload).subscribe(
+    
+    this.ps.updateProduct(this.payload).pipe(takeUntil(this.destroyed)).subscribe(
       data => {
         console.log("update result: ", data);
-        if(data) {
+        if(data.id != -1) {
           this.router.navigate(['/']);
+        }
+        else {
+          this.message = "Mise a jour du produit: " + data.error.message;
+          this.isSuccess = false;
+          this.isMessage = true;
         }
       }
     );

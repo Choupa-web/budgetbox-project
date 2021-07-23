@@ -2,6 +2,8 @@
     <button mat-flat-button color="warn" (click)="backButton()">Retour</button>
     <h1>Modification de produit</h1>
 
+    <app-alerts *ngIf="isMessage" [message]="message" [isSuccess]="isSuccess"></app-alerts>
+
     <form [formGroup]="updateProductForm" (ngSubmit)="onSubmitForm()">
         <mat-form-field appearance="outline">
             <mat-label>Nom</mat-label>
@@ -14,3 +16,9 @@
         <button mat-flat-button color="primary" [disabled]="!isValueChanged">Enregistrer</button>
     </form>
 </section>
+<mat-progress-spinner *ngIf="isBusy"
+        class="spinner"
+        color="warn"
+        mode="indeterminate"
+        value="50">
+</mat-progress-spinner>

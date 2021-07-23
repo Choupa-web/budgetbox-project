@@ -23,6 +23,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { ProductAddComponent } from './components/product-add/product-add.component';
 import { AlertsComponent } from './shared/alerts/alerts.component';
 import { Error404Component } from './components/error404/error404.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -52,7 +53,8 @@ import { Error404Component } from './components/error404/error404.component';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

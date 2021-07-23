@@ -1,10 +1,10 @@
-# BudgetboxProject
+# Budgetbox Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.3.
+## Modification de l'URL de l'API
 
-## Change API url
+L'API utilisée est par défaut : http://localhost:8080/products/v1.0/ .
 
-The url to use the API is available in the files src\environments\environment.ts and src\environments\environment.prod.ts
+Celle-ci peut être modifiée en modifiant les fichiers src\environments\environment.ts et src\environments\environment.prod.ts .
 
 ```sh
 export const environment = {
@@ -13,21 +13,17 @@ export const environment = {
 };
 ```
 
-## Development server
+## Serveur de développement
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Lancer `ng serve` pour le serveur de développement. Ensuite ouvrir `http://localhost:4200/` dans le navigateur.
 
-## Prepare for deployment
+## Mise en production
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-Then copy the content of dist/angular-project-name to your server web folder.
+Lancer `ng build` pour compiler le projet. Les fichiers seront placés dans le répertoire `dist/` . Utiliser  l'option `--prod` pour une compilation en production.
+Ensuite copier le contenu de  `dist/angular-project-name` dans le répertoire de votre site web.
 
-## Running unit tests
+## Tests unitaires
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Lancer `ng test` pour exécuter les tests unitaires via [Karma](https://karma-runner.github.io).
 
 

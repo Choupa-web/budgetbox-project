@@ -3,4 +3,10 @@
     <app-products-grid *ngIf="screenIsBig" [productsData]="productsList" (EditProduct)="edit($event)" (DeleteProduct)="delete($event)"></app-products-grid>
     <app-products-list *ngIf="screenIsSmall" [productsData]="productsList" (EditProduct)="edit($event)" (DeleteProduct)="delete($event)"></app-products-list>
 </section>
+<mat-progress-spinner *ngIf="isBusy"
+        class="spinner"
+        color="warn"
+        mode="indeterminate"
+        value="50">
+    </mat-progress-spinner>
 

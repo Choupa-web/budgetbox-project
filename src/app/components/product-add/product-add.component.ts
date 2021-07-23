@@ -27,6 +27,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   isSuccess:boolean;
   lastProductDeleted:string;
   destroyed = new Subject<void>();
+  isBusy:boolean;
 
   constructor(private fb:FormBuilder, private ps:ProductsService, private router:Router) { }
 
@@ -60,18 +61,20 @@ export class ProductAddComponent implements OnInit, OnDestroy {
       groupId:"136",
       subGroupId:"137"
     };
+    this.isBusy = true;
     this.ps.addProduct(this.payload).pipe(takeUntil(this.destroyed)).subscribe(
       data => {
-        if(data) {
+        if(data.id != -1) {
           this.message = "Produit ajouté avec succes";
           this.isSuccess = true;
         }
         else {
-          this.message = "Erreur de lors de l'ajout du produit";
+          this.message = "Ajout d'un produit: " + data.error.message;
           this.isSuccess = false;
         }
         this.isMessage = true;
         this.addProductForm.reset();
+        this.isBusy = false;
       }
     );
   }

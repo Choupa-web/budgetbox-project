@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Product } from '../shared/interfaces';
 import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json", "Access-Control-Allow-Origin":"*" })
@@ -32,7 +33,7 @@ export class ProductsService {
     }
     
     console.log("url:", this.queryUrl);
-    return this.http.get(this.queryUrl, httpOptions);
+    return this.http.get(this.queryUrl, httpOptions).pipe(catchError(this.handlerror));
   }
 
   /**
@@ -41,7 +42,7 @@ export class ProductsService {
   */
   getProductInfo(id:number):Observable<any>{
     this.queryUrl = this.productsUrl + id ;
-    return this.http.get(this.queryUrl, httpOptions);
+    return this.http.get(this.queryUrl, httpOptions).pipe(catchError(this.handlerror));
 
   }
 
@@ -51,7 +52,7 @@ export class ProductsService {
   */
   updateProduct(product: Product) {
     this.queryUrl = this.productsUrl + product.id;
-    return this.http.put(this.queryUrl,product);
+    return this.http.put(this.queryUrl,product).pipe(catchError(this.handlerror));
   }
 
   /**
@@ -59,7 +60,7 @@ export class ProductsService {
   * @param product {Product} all product info fields
   */
   addProduct(product:any) {
-    return this.http.post(this.productsUrl,product);
+    return this.http.post(this.productsUrl,product).pipe(catchError(this.handlerror));
   }
  
   /**
@@ -67,8 +68,13 @@ export class ProductsService {
   * @param id {number} all product info fields
   */
   deleteProduct(id:number){
-    return this.http.delete(this.productsUrl + id);
+    return this.http.delete(this.productsUrl + id).pipe(catchError(this.handlerror));
 
+  }
+
+  private handlerror<T>(error:string):  Observable<any>{
+    console.log("my error: ",error);
+    return of({ error: error, total:0, id:-1 });
   }
 
 

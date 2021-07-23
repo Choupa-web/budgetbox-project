@@ -3,9 +3,10 @@ import { ProductsService } from '../../services/products.service';
 import { Product } from '../../shared/interfaces';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {takeUntil} from 'rxjs/operators';
-import {Subject, concat} from 'rxjs';
+import {Subject, concat, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -19,8 +20,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   message:string ='';
   isMessage:boolean = false;
   isSuccess:boolean;
-  lastProductDeleted:string ='';
- 
+  lastProductDeleted:string =''; 
   totalRecords: number;
 
   displayNameMap = new Map([
@@ -35,6 +35,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   currentScreenSize: string;
   screenIsBig:boolean = true;
   screenIsSmall:boolean = false;
+  isBusy:boolean;
 
 
   constructor(private ps: ProductsService, breakpointObserver: BreakpointObserver, private router:Router){ 
@@ -62,7 +63,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log("environment: ", environment);
+    this.isBusy = true;
     this.getProductsList();
+    this.isBusy = false;
     console.log("screen size: ", this.currentScreenSize);
   }
 
@@ -76,6 +79,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   delete($event) {
+    this.isBusy = true;
     this.ps.deleteProduct($event.id).pipe(takeUntil(this.destroyed)).subscribe(
       result => {
         console.log("delete result: ", result);
@@ -85,29 +89,39 @@ export class ProductsComponent implements OnInit, OnDestroy {
           localStorage.setItem("lastProductDeleted", $event.name);
           this.getProductsList();
         }
-        else {
-          this.message = "Problème rencontré lors de la suppression du produit";
+        else if(result.total == 0) {
+          this.message = result.error.message;
           this.isSuccess = false;
         }
         this.isMessage = true;
+        this.isBusy = false;
       }
     )
   }
 
   getProductsList() {
-      this.ps.getProducts().subscribe(
+      this.ps.getProducts().pipe(takeUntil(this.destroyed)).subscribe(
         data => {
-          this.totalRecords = data.total;
-          console.log("total Records: ", this.totalRecords);
-          this.ps.getProducts(this.totalRecords).pipe(takeUntil(this.destroyed)).subscribe(
-            fulldata => {
-              this.productsList = fulldata.hits;
-            });
+          if(data.total > 0) {
+            this.totalRecords = data.total;
+            console.log("total Records: ", this.totalRecords);
+            this.ps.getProducts(this.totalRecords).pipe(takeUntil(this.destroyed)).subscribe(
+              fulldata => {
+                if(fulldata.total > 0) {
+                  this.productsList = fulldata.hits;
+                }
+                else {
+                  this.message = "Récuperation de la liste produits: " + data.error.message;
+                  this.isSuccess = false;
+                  this.isMessage = true;
+                }
+              });
+          }
+          else {
+            this.message = "Récuperation de la liste produits: " + data.error.message;
+            this.isSuccess = false;
+            this.isMessage = true;
+          }
         });
-      /* TROUVER MEILLEUR SOLUTION  */
   }
-
-
- 
-
 }

@@ -16,3 +16,9 @@
         <button mat-flat-button color="primary" [disabled]="!isValues">Ajouter</button>
     </form>
 </section>
+<mat-progress-spinner *ngIf="isBusy"
+        class="spinner"
+        color="warn"
+        mode="indeterminate"
+        value="50">
+    </mat-progress-spinner>
